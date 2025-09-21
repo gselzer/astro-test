@@ -1,10 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Greeting from '../components/Greeting';
+import {Image} from 'astro:assets';
+import me from '../images/me.jpg';
 const pageTitle = "Home Page";
 ---
 <BaseLayout pageTitle={pageTitle}>
-	<h1>My astro site</h1>
-	<h2>My awesome blog subtitle</h2>
-	<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]} />
+	<div class="header-image-row">
+		<Image src={me} alt="A picture of me" class="profile-img" />
+		<h1 class="typing-effect" id="greeting"></h1>
+	</div>
+	<script src="/src/scripts/typing.js" type="module"></script>
 </BaseLayout>
