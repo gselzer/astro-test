@@ -1,0 +1,149 @@
+---
+// BlogCarousel.astro
+// Props: posts (array of { title, date, excerpt, href })
+const { posts } = Astro.props;
+---
+<div class="carousel-container">
+  <button class="carousel-arrow left" aria-label="Scroll left">&#8592;</button>
+  <div class="carousel-scroll" id="carousel-scroll">
+    {posts.map(post => (
+      <a href={post.href} class="carousel-card">
+        <div class="carousel-date">{post.date}</div>
+        <div class="carousel-title">{post.title}</div>
+        <div class="carousel-excerpt">{post.excerpt}</div>
+        <span class="carousel-read">Read</span>
+      </a>
+    ))}
+  </div>
+  <button class="carousel-arrow right" aria-label="Scroll right">&#8594;</button>
+</div>
+<script>
+const scrollEl = document.getElementById('carousel-scroll');
+const leftBtn = document.querySelector('.carousel-arrow.left');
+const rightBtn = document.querySelector('.carousel-arrow.right');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+scrollEl.addEventListener('mousedown', (e) => {
+  isDown = true;
+  scrollEl.classList.add('active');
+  startX = e.pageX - scrollEl.offsetLeft;
+  scrollLeft = scrollEl.scrollLeft;
+});
+scrollEl.addEventListener('mouseleave', () => {
+  isDown = false;
+  scrollEl.classList.remove('active');
+});
+scrollEl.addEventListener('mouseup', () => {
+  isDown = false;
+  scrollEl.classList.remove('active');
+});
+scrollEl.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - scrollEl.offsetLeft;
+  const walk = (x - startX) * 2; //scroll-fast
+  scrollEl.scrollLeft = scrollLeft - walk;
+});
+scrollEl.addEventListener('touchstart', (e) => {
+  isDown = true;
+  startX = e.touches[0].pageX - scrollEl.offsetLeft;
+  scrollLeft = scrollEl.scrollLeft;
+});
+scrollEl.addEventListener('touchend', () => {
+  isDown = false;
+});
+scrollEl.addEventListener('touchmove', (e) => {
+  if (!isDown) return;
+  const x = e.touches[0].pageX - scrollEl.offsetLeft;
+  const walk = (x - startX) * 2;
+  scrollEl.scrollLeft = scrollLeft - walk;
+});
+leftBtn.addEventListener('click', () => {
+  scrollEl.scrollBy({ left: -300, behavior: 'smooth' });
+});
+rightBtn.addEventListener('click', () => {
+  scrollEl.scrollBy({ left: 300, behavior: 'smooth' });
+});
+</script>
+<style>
+.carousel-container {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+  align-items: center;
+}
+.carousel-scroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0;
+  width: 100%;
+}
+.carousel-card {
+  min-width: 300px;
+  max-width: 320px;
+  background: #111a22;
+  border: 1px solid #1e2a36;
+  border-radius: 1rem;
+  color: #eaf6fb;
+  text-decoration: none;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.carousel-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.carousel-date {
+  font-size: 0.95rem;
+  color: #7ec4e6;
+}
+.carousel-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.carousel-excerpt {
+  font-size: 1rem;
+  color: #b3c2cc;
+}
+.carousel-read {
+  color: #7ec4e6;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+.carousel-arrow {
+  background: #1e2a36;
+  color: #7ec4e6;
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  transition: background 0.2s;
+  z-index: 2;
+}
+.carousel-arrow:hover {
+  background: #7ec4e6;
+  color: #1e2a36;
+}
+@media (max-width: 700px) {
+  .carousel-card {
+    min-width: 80vw;
+    max-width: 90vw;
+  }
+  .carousel-scroll {
+    gap: 1rem;
+  }
+}
+</style>

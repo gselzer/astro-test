@@ -1,13 +1,51 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import CardCarousel from "../components/BlogCarousel.astro";
 import {Image} from 'astro:assets';
 import me from '../images/me.jpg';
 const pageTitle = "Home Page";
 ---
+
+<style>
+	.header-image-row {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		justify-content: flex-start;
+		margin-top: 2rem;
+	}
+
+	.profile-img {
+	min-width: 120px;
+	width: 120px;
+	height: 120px;
+	object-fit: cover;
+	border-radius: 50%;
+	box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+	}
+</style>
+
 <BaseLayout pageTitle={pageTitle}>
 	<div class="header-image-row">
 		<Image src={me} alt="A picture of me" class="profile-img" />
 		<h1 class="typing-effect" id="greeting"></h1>
 	</div>
+	<p>
+		I'm a Software Engineer residing in Chicago, IL.
+	</p>
+	<p>
+		I currently work for the <a href="https://loci.wisc.edu">Elicieri Lab (LOCI)</a> at the University of Wisconsin-Madison, where I actively develop <a href="https://imagej.net/software/fiji/">ImageJ2/Fiji</a> and <a href="https://micro-manager.org/">Micro-Manager</a>. 
+	</p>
+	<p>
+		Check out my various writings on past and present projects:
+	</p>
+	<CardCarousel posts={[
+		{ title: "Building a Custom ImageJ2 Plugin", date: "2023-10-15", excerpt: "A step-by-step guide to creating your own ImageJ2 plugin from scratch.", href: "/posts/building-a-custom-imagej2-plugin" },
+		{ title: "Optimizing Micro-Manager for High-Speed Imaging", date: "2023-09-10", excerpt: "Tips and tricks to get the most out of Micro-Manager for high-speed microscopy.", href: "/posts/optimizing-micro-manager-for-high-speed-imaging" },
+		{ title: "Integrating Python with ImageJ2", date: "2023-08-05", excerpt: "How to leverage Python scripts within the ImageJ2 environment for advanced image analysis.", href: "/posts/integrating-python-with-imagej2" },
+	]} />
+	<p>
+		When I'm not online, you can find me out on a <a href="https://www.pdga.com/news/what-disc-golf-guide-parents-kids">disc golf</a> course or at the gym. I'm a diehard Milwaukee Brewers fan, and also love board and video games!
+	</p>
 	<script src="/src/scripts/typing.js" type="module"></script>
 </BaseLayout>
