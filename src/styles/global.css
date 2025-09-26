@@ -5,7 +5,6 @@
   max-width: 80ch;
   padding: 1rem;
   line-height: 1.5;
-  /* background: linear-gradient(45deg, #2C1810, #8B4513); */
   position: relative;
 }
 
@@ -25,7 +24,6 @@ body {
 .wrapper {
   min-height: 100%;
   display: grid;
-  /* grid-template-rows: auto 1fr auto; */
 }
 
 
