@@ -7,6 +7,23 @@ const pageTitle = "Home Page";
 ---
 
 <style>
+	/* Typing Effect Animation */
+	.typing-effect {
+	font-family: var(--font-mono);
+	border-right: 2px solid var(--accent-color);
+	width: fit-content;
+	margin: 2rem auto 0 auto;
+	overflow: hidden;
+	letter-spacing: 1px;
+	animation: blink-cursor 0.8s steps(1) infinite;
+	}
+
+	@keyframes blink-cursor {
+	0%, 100% { border-color: var(--accent-color); }
+	50% { border-color: transparent; }
+	}
+
+	/* Side-by-side image and header */
 	.header-image-row {
 		display: flex;
 		align-items: center;

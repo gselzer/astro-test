@@ -2,14 +2,12 @@
 import Github from "../icons/github.astro";
 import RSS from "../icons/rss.astro";
 import LinkedIn from "../icons/linkedin.astro";
-
-let year = new Date().getFullYear();
 ---
 
 <style>
   footer {
     width: 100vw;
-    background: rgba(22, 105, 122, 1);
+    background: var(--footer-bg);
     position: relative;
     display: flex;
     flex-direction: row;
@@ -18,7 +16,6 @@ let year = new Date().getFullYear();
     gap: 2rem;
     margin-top: auto;
     padding: 2rem 4vw;
-    color: #fff;
     box-sizing: border-box;
   }
 
@@ -35,23 +32,10 @@ let year = new Date().getFullYear();
   .footer-links {
     align-items: flex-end;
   }
-  svg {
-    color: #EDE7E3;
-    width: 1.5em;
-  }
 
-  .footer-icon-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.1rem;
-    transition: color 0.2s;
-  }
-  .footer-icon-link:hover {
-    color: #FFA62B;
+  svg {
+    color: var(--text-primary);
+    width: 1.5em;
   }
 
 </style>
@@ -59,20 +43,19 @@ let year = new Date().getFullYear();
 
 <footer>
   <div class="footer-col footer-social">
-    <a href="https://github.com/gselzer" target="_blank" rel="noopener" aria-label="GitHub" class="footer-icon-link">
+    <a href="https://github.com/gselzer" target="_blank" rel="noopener" aria-label="GitHub" class="nav-link">
       <Github/> GitHub
     </a>
-    <a href="https://www.linkedin.com/in/gabriel-selzer-386881271/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer-icon-link">
+    <a href="https://www.linkedin.com/in/gabriel-selzer-386881271/" target="_blank" rel="noopener" aria-label="LinkedIn" class="nav-link">
       <LinkedIn /> LinkedIn
     </a>
-    <a href="/rss.xml" target="_blank" rel="noopener" aria-label="RSS Feed" class="footer-icon-link">
+    <a href="/rss.xml" target="_blank" rel="noopener" aria-label="RSS Feed" class="nav-link">
       <RSS /> RSS Feed
     </a>
   </div>
   <div class="footer-col footer-links">
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
-    <a href="/tags">Tags</a>
-    <a href="/">Home</a>
+    <a href="/" class="nav-link">Home</a>
+    <a href="/blog" class="nav-link">Blog</a>
+    <a href="/tags" class="nav-link">Tags</a>
   </div>
 </footer>

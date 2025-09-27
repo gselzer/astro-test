@@ -1,25 +1,38 @@
 ---
-import Navigation from "./Navigation.astro";
-
 ---
 
 <style>
   header {
-    width: 100%;
-    background: rgba(22, 105, 122, 1);
-    position: relative;
+    width: 100vw;
+    height: 4rem;
+    background: var(--footer-bg);
     display: flex;
-    gap: 1rem;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 4vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    box-sizing: border-box;
+  }
+
+  header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  nav {
+    display: flex;
+    gap: 2rem;
   }
 </style>
 
 <header>
-    <nav>
-        <Navigation />
-		<script>
-			import "../scripts/menu.js";
-		</script>
-    </nav>
+  <a href="/" class="nav-link"><h2>Gabriel Selzer</h2></a>
+  <nav>
+    <a href="/" class="nav-link">Home</a>
+    <a href="/blog" class="nav-link">Blog</a>
+  </nav>
 </header>
