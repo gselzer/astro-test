@@ -3,13 +3,17 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogPost from '../components/BlogPost.astro';
 const allPosts = await getCollection('blog');
-const pageTitle = "My Astro Learning Blog";
+const allLinks = await getCollection('external');
+const pageTitle = "Writings";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-	<h1>My Astro Learning Blog</h1>
-	<p>This is where I will post about my journey learning Astro.</p>
+	<h1>Blog Posts</h1>
 	<ul>
 		{allPosts.map((post: any) => <BlogPost url={`/posts/${post.id}`} title={post.data.title} />)}
+	</ul>
+	<h1>Other Writings</h1>
+	<ul>
+		{allLinks.map((post: any) => <BlogPost url={`${post.data.redirect}`} title={post.data.title} />)}
 	</ul>
 </BaseLayout>

@@ -1,0 +1,7 @@
+napari-imagej-2023:
+    title: "napari-imagej: ImageJ ecosystem access from napari"
+    pubDate: 2023-08-18
+    description: "Our latest publication on quality assessment and reproducibility standards in light microscopy, published in Nature Methods."
+    author: "Gabriel Selzer et al."
+    tags: ["publication"]
+    redirect: "https://doi.org/10.1038/s41592-023-01990-0"
