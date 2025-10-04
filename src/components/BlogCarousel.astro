@@ -1,6 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-const allPosts = (await getCollection('blog')).sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+const blogPosts = await getCollection('blog');
+const externalPosts = await getCollection('external');
+const allPosts = [...blogPosts, ...externalPosts]
+    .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
+    .slice(0, 5); // Show only the 5 most recent posts
 ---
 <div class="carousel-container">
   <div class="carousel-scroll" id="carousel-scroll">
@@ -13,112 +17,115 @@ const allPosts = (await getCollection('blog')).sort((a, b) => new Date(b.data.pu
     ))}
   </div>
 </div>
+
 <script>
-const scrollEl = document.getElementById('carousel-scroll');
-if (scrollEl) {
-  let isDown = false;
-  let startX: number;
-  let scrollLeft: number;
+  const scrollEl = document.getElementById('carousel-scroll');
+  if (scrollEl) {
+    let isDown = false;
+    let startX: number;
+    let scrollLeft: number;
 
-  scrollEl.addEventListener('mousedown', (e) => {
-    isDown = true;
-    scrollEl.classList.add('active');
-    startX = e.pageX - scrollEl.offsetLeft;
-    scrollLeft = scrollEl.scrollLeft;
-  });
-  
-  scrollEl.addEventListener('mouseleave', () => {
-    isDown = false;
-    scrollEl.classList.remove('active');
-  });
-  
-  scrollEl.addEventListener('mouseup', () => {
-    isDown = false;
-    scrollEl.classList.remove('active');
-  });
-  
-  scrollEl.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - scrollEl.offsetLeft;
-    const walk = (x - startX) * 2;
-    scrollEl.scrollLeft = scrollLeft - walk;
-  });
-}
+    scrollEl.addEventListener('mousedown', (e) => {
+      isDown = true;
+      scrollEl.classList.add('active');
+      startX = e.pageX - scrollEl.offsetLeft;
+      scrollLeft = scrollEl.scrollLeft;
+    });
+    
+    scrollEl.addEventListener('mouseleave', () => {
+      isDown = false;
+      scrollEl.classList.remove('active');
+    });
+    
+    scrollEl.addEventListener('mouseup', () => {
+      isDown = false;
+      scrollEl.classList.remove('active');
+    });
+    
+    scrollEl.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scrollEl.offsetLeft;
+      const walk = (x - startX) * 2;
+      scrollEl.scrollLeft = scrollLeft - walk;
+    });
+  }
 </script>
+
 <style>
-.carousel-container {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  padding: 2rem 0;
-  box-sizing: border-box;
-}
-.carousel-scroll {
-  display: flex;
-  gap: 2rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  padding: 1rem 4vw 1rem max(4vw, calc((100vw - 80ch) / 2));
-  width: 100%;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-}
-.carousel-scroll::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
-}
-.carousel-card {
-  min-width: 300px;
-  max-width: 320px;
-  background: var(--footer-bg);
-  border-radius: 1rem;
-  color: var(--text-primary);
-  text-decoration: none;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
-
-.carousel-card:first-child {
-  scroll-snap-align: none;
-}
-
-.carousel-scroll::before {
-  content: '';
-  width: max(0px, calc((100vw - 80ch) / 2 - 4vw));
-  flex-shrink: 0;
-  scroll-snap-align: start;
-}
-.carousel-card:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-}
-.carousel-date {
-  font-size: 0.95rem;
-  color: var(--accent-color);
-}
-.carousel-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-.carousel-excerpt {
-  font-size: 1rem;
-  color: #b3c2cc;
-}
-
-@media (max-width: 700px) {
-  .carousel-card {
-    min-width: 80vw;
-    max-width: 90vw;
+  .carousel-container {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 2rem 0;
+    box-sizing: border-box;
   }
   .carousel-scroll {
-    gap: 1rem;
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 4vw 1rem max(4vw, calc((100vw - 80ch) / 2));
+    width: 100%;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
   }
-}
+  .carousel-scroll::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+  }
+  .carousel-card {
+    min-width: 300px;
+    max-width: 320px;
+    background: var(--footer-bg);
+    border-radius: 1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  .carousel-card:first-child {
+    align-self: 
+    scroll-snap-align: none;
+  }
+
+  .carousel-scroll::before {
+    content: '';
+    width: max(0px, calc((100vw - 80ch) / 2 - 4vw));
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  .carousel-card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+  .carousel-date {
+    font-size: 0.95rem;
+    color: var(--accent-color);
+  }
+  .carousel-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  .carousel-excerpt {
+    font-size: 1rem;
+    color: #b3c2cc;
+  }
+
+  @media (max-width: 700px) {
+    .carousel-card {
+      min-width: 80vw;
+      max-width: 90vw;
+    }
+    .carousel-scroll {
+      gap: 1rem;
+    }
+  }
 </style>
