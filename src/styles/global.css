@@ -1,11 +1,11 @@
 
 :root {
   /* Color Variables */
-  --primary-bg-start: #489FB5;
-  --primary-bg-end: #82C0CC;
+  --primary-bg-start: #212D40;
+  --primary-bg-end: #364156;
   --text-primary: #EDE7E3;
-  --accent-color: #FFA62B;
-  --footer-bg: #16697A;
+  --accent-color: #d6596e;
+  --footer-bg: #11151C;
   --dot-pattern: var(--footer-bg);
   
   /* Typography */
