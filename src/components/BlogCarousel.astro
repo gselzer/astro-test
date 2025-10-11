@@ -1,20 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
+import Paper from "../icons/paper.astro";
+import Placeholder from "../icons/placeholder.astro";
 const maxPosts = 5;
 
 const blogPosts = await getCollection('blog');
 const externalPosts = await getCollection('external');
 const allPosts = [...blogPosts, ...externalPosts]
     .sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime())
-    .slice(0, maxPosts); // Show only the 5 most recent posts
+    .slice(0, maxPosts);
 ---
-<div class="slider">
-  <div class="slides" id="carousel-scroll">
+<div class="carousel-container">
+  <div class="carousel" id="carousel-scroll">
     {allPosts.map(post => (
       <a href={`/posts/${post.id}`} class="carousel-card" id={`card-${post.id}`}>
-        <div class="carousel-date">{new Date(post.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
-        <div class="carousel-title">{post.data.title}</div>
-        <div class="carousel-excerpt">{post.data.description}</div>
+        <!-- TODO: Might be nice to put an image here eventually -->
+        <div class="card-header">
+          <div class="card-date">
+            {new Date(post.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          </div>
+          <div class="card-icon">
+            {post.data.icon === "paper" ? <Paper /> : <Placeholder />}
+          </div>
+        </div>
+        <div class="card-title">{post.data.title}</div>
+        <div class="card-excerpt">{post.data.description}</div>
       </a>
     ))}
   </div>
@@ -90,22 +100,36 @@ const allPosts = [...blogPosts, ...externalPosts]
   .carousel-card:focus {
     outline: none; /* Removes the browser's default focus outline ring */
   }
-  
-  /* Date text styling */
-  .carousel-date {
-    font-size: 0.95rem; /* Slightly smaller than normal text (15.2px) */
+
+  .card-header {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Spaces out date and icon to opposite ends */
     color: var(--accent-color); /* Uses accent color variable (orange/yellow) */
   }
   
+  /* Date text styling */
+  .card-date {
+    align-items: flex-start ;
+    font-size: 0.95rem; /* Slightly smaller than normal text (15.2px) */
+  }
+
+  /* Date text styling */
+  .card-icon {
+    align-items: flex-end ;
+  }
+  
   /* Title text styling */
-  .carousel-title {
+  .card-title {
     font-size: 1.3rem; /* Larger text for the title (20.8px) */
     font-weight: bold; /* Makes text thick and prominent */
     margin-bottom: 0.5rem; /* Adds space below the title (8px) */
   }
   
   /* Description/excerpt text styling */
-  .carousel-excerpt {
+  .card-excerpt {
     font-size: 1rem; /* Normal text size (16px) */
     color: #b3c2cc; /* Light gray-blue color for less emphasis */
   }
@@ -116,13 +140,13 @@ const allPosts = [...blogPosts, ...externalPosts]
   }
 
   /* Main carousel container */
-  .slider {
+  .carousel-container {
     text-align: center; /* Centers content horizontally */
     overflow: hidden; /* Hides content that extends beyond container */
   }
 
   /* Scrollable container for carousel items */
-  .slides {
+  .carousel {
     display: flex; /* Arranges items horizontally in a row */
     overflow-x: auto; /* Allows horizontal scrolling when content overflows */
     scroll-snap-type: x mandatory; /* Forces scrolling to snap to specific points */
@@ -131,23 +155,23 @@ const allPosts = [...blogPosts, ...externalPosts]
   }
 
   /* Scrollbar styling for webkit browsers (Chrome, Safari) */
-  .slides::-webkit-scrollbar {
+  .carousel::-webkit-scrollbar {
     width: 10px; /* Sets scrollbar width */
     height: 10px; /* Sets scrollbar height */
   }
 
   /* Scrollbar handle/thumb styling */
-  .slides::-webkit-scrollbar-thumb {
+  .carousel::-webkit-scrollbar-thumb {
     border-radius: 10px; /* Rounds the scrollbar handle */
   }
 
   /* Scrollbar track styling */
-  .slides::-webkit-scrollbar-track {
+  .carousel::-webkit-scrollbar-track {
     background: transparent; /* Makes scrollbar track invisible */
   }
 
   /* Individual slide containers (not currently used but defined) */
-  .slides > div {
+  .carousel > div {
     scroll-snap-align: start; /* Aligns slide to snap points */
     flex-shrink: 0; /* Prevents slide from shrinking */
     width: 100%; /* Takes full container width */
@@ -167,7 +191,7 @@ const allPosts = [...blogPosts, ...externalPosts]
   }
 
   /* Navigation buttons styling */
-  .slider > a {
+  .carousel-container > a {
     display: inline-flex; /* Makes button a flexible inline container */
     width: 1.5rem; /* Sets button width (24px) */
     height: 1.5rem; /* Sets button height (24px) */
@@ -181,7 +205,7 @@ const allPosts = [...blogPosts, ...externalPosts]
   }
 
   /* Button pressed state */
-  .slider > a:active {
+  .carousel-container > a:active {
     top: 1px; /* Moves button down 1px when clicked for press effect */
   }
 
@@ -193,5 +217,10 @@ const allPosts = [...blogPosts, ...externalPosts]
   /* Button hover transition effect */
   .carousel-btn {
     transition: background-color 0.3s ease; /* Smooth color change animation */
+  }
+
+  svg {
+    color: var(--accent-color);
+    width: 1.5em;
   }
 </style>
